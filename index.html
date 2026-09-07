@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>A Note from Honey</title>
 
+  <!-- Google Fonts: Caveat (Handwriting), Instrument Serif & Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -53,7 +54,7 @@
       transition: background-color 0.8s ease;
     }
 
-    /* Paper Film Texture */
+    /* Subtle Paper Grain Film */
     .grain {
       position: fixed;
       inset: 0;
@@ -169,7 +170,7 @@
 
     .gate-title {
       font-family: var(--f-display);
-      font-size: 14px;
+      font-size: 1.45rem;
       font-weight: 700;
       line-height: 1.35;
       margin-bottom: 12px;
@@ -236,7 +237,7 @@
       padding: max(80px, env(safe-area-inset-top)) 24px max(80px, env(safe-area-inset-bottom));
       display: flex;
       flex-direction: column;
-      gap: 56px;
+      gap: 52px;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.6s ease;
@@ -247,15 +248,16 @@
       pointer-events: auto;
     }
 
-    /* Clean reveal animation without cards */
     .flow-item {
       position: relative;
       opacity: 0;
       transform: translateY(30px);
       transition: opacity 0.85s var(--ease-out), transform 0.85s var(--ease-bounce);
+      display: none;
     }
 
     .flow-item.show-item {
+      display: block;
       opacity: 1;
       transform: translateY(0);
     }
@@ -281,8 +283,30 @@
       transform: rotate(-1.5deg);
     }
 
+    /* Interactive Stepper Trigger */
+    .next-step-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(24, 25, 31, 0.05);
+      border: 1px dashed rgba(24, 25, 31, 0.25);
+      padding: 10px 20px;
+      border-radius: 100px;
+      font-family: var(--f-hand);
+      font-size: 1.25rem;
+      color: var(--ink-soft);
+      cursor: pointer;
+      margin-top: 24px;
+      transition: all 0.2s var(--ease-bounce);
+    }
+
+    .next-step-btn:active {
+      transform: scale(0.95);
+      background: rgba(24, 25, 31, 0.1);
+    }
+
     /* --------------------------------------------------------
-       SECTION 2: SPEECH BUBBLES (MATCHING YOUR IMAGE 1)
+       SECTION 2: SPEECH BUBBLES WITH INDIVIDUAL POP
     -------------------------------------------------------- */
     .speech-bubbles-flow {
       position: relative;
@@ -299,7 +323,7 @@
 
     .hand-top-misunderstood {
       position: absolute;
-      top: -34px;
+      top: -24px;
       right: 12px;
       font-family: var(--f-hand);
       font-size: 1.35rem;
@@ -318,20 +342,33 @@
       position: relative;
       box-shadow: 4px 6px 0px rgba(24, 25, 31, 0.08);
       max-width: 88%;
+      opacity: 0;
+      transform: scale(0.85) translateY(10px);
+      transition: opacity 0.5s var(--ease-out), transform 0.6s var(--ease-bounce);
     }
 
     .bubble-left {
       align-self: flex-start;
       background: #ffffff;
       color: #18191f;
-      transform: rotate(-1deg);
     }
 
     .bubble-right {
       align-self: flex-end;
       background: #f59e0b;
       color: #18191f;
-      transform: rotate(1deg);
+    }
+
+    .flow-item.show-item .bubble-left {
+      opacity: 1;
+      transform: rotate(-1deg) scale(1) translateY(0);
+      transition-delay: 0.1s;
+    }
+
+    .flow-item.show-item .bubble-right {
+      opacity: 1;
+      transform: rotate(1deg) scale(1) translateY(0);
+      transition-delay: 0.4s;
     }
 
     .hand-bottom-things {
@@ -344,7 +381,7 @@
     }
 
     /* --------------------------------------------------------
-       SECTION 3: TIMELINE VERTICAL PATH (MATCHING YOUR IMAGE 2)
+       SECTION 3: TIMELINE VERTICAL PATH
     -------------------------------------------------------- */
     .timeline-flow {
       position: relative;
@@ -399,7 +436,7 @@
     }
 
     /* --------------------------------------------------------
-       SECTION 4: DEEP NAVY CONTRAST PANEL (MATCHING YOUR IMAGE 3)
+       SECTION 4: DEEP NAVY CONTRAST PANEL
     -------------------------------------------------------- */
     .navy-contrast-section {
       background: var(--navy-deep);
@@ -429,7 +466,7 @@
 
     .leaving-door-tag {
       position: absolute;
-      top: -10px;
+      top: -2px;
       right: 12px;
       font-family: var(--f-hand);
       font-size: 1.35rem;
@@ -465,7 +502,7 @@
     }
 
     /* --------------------------------------------------------
-       SECTION 5: FINAL CLOSE & TELEGRAM (MATCHING YOUR IMAGE 4)
+       SECTION 5: FINAL CLOSE & TELEGRAM (CLEAN & DIRECT)
     -------------------------------------------------------- */
     .final-closing-flow {
       text-align: center;
@@ -474,7 +511,7 @@
 
     .final-serif-lead {
       font-family: var(--f-serif);
-      font-size: clamp(2.1rem, 7vw, 2.5rem);
+      font-size: clamp(2.1rem, 7vw, 2.6rem);
       line-height: 1.25;
       margin-bottom: 8px;
       color: var(--ink);
@@ -483,7 +520,7 @@
     .final-signature-wrap {
       position: relative;
       display: inline-block;
-      margin-bottom: 30px;
+      margin-bottom: 34px;
     }
 
     .final-signature {
@@ -498,23 +535,12 @@
 
     .final-sig-underline {
       position: absolute;
-      left: 8%;
+      left: 4%;
       bottom: 2px;
-      width: 84%;
+      width: 92%;
       height: 4px;
       background: #ea580c;
       border-radius: 4px;
-    }
-
-    .final-subtext-group {
-      font-family: var(--f-sans);
-      font-size: 0.95rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: #18191f;
-      font-weight: 700;
-      line-height: 1.95;
-      margin-bottom: 38px;
     }
 
     .telegram-btn {
@@ -533,9 +559,8 @@
       box-shadow: 0 10px 0px #c7d2fe;
       border: 2px solid #18191f;
       transition: transform 0.2s var(--ease-bounce);
-      margin-bottom: 38px;
       width: 100%;
-      max-width: 320px;
+      max-width: 330px;
     }
 
     .telegram-btn svg {
@@ -548,21 +573,13 @@
       transform: scale(0.96) translateY(4px);
       box-shadow: 0 4px 0px #c7d2fe;
     }
-
-    .final-bottom-aside {
-      font-family: var(--f-hand);
-      font-size: 1.55rem;
-      color: #18191f;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
   </style>
 </head>
 <body>
 
   <div class="grain" aria-hidden="true"></div>
 
+  <!-- Ambient Audio Pill Header -->
   <div class="music-capsule" id="musicBtn" role="button" aria-label="Toggle music">
     <div class="vinyl">
       <div class="vinyl-dot"></div>
@@ -570,10 +587,12 @@
     <span class="music-tag" id="musicStatus">listening quietly ♫</span>
   </div>
 
+  <!-- Invisible YouTube Engine: pA6N1o_sv5M (ဗဒင် - နေရာ ၂) -->
   <div id="ytHost">
     <div id="ytPlayer"></div>
   </div>
 
+  <!-- STAGE 1: GATE MODAL -->
   <div id="gateModal">
     <div class="gate-content">
       <span class="gate-sticker">from honey</span>
@@ -587,16 +606,20 @@
     </div>
   </div>
 
+  <!-- STAGE 2: SEQUENTIAL EDITORIAL STREAM -->
   <main id="noteContent">
 
+    <!-- Section 1 -->
     <div class="flow-item" id="item1">
       <span class="hand-label">just thinking...</span>
       <div class="editorial-p">
-        <p>I’ve been thinking about what happened, and I understand that you were upset.</p>
-        <p>I never expected things to end like this, and honestly, I was surprised and shocked by how strongly you reacted when you were upset.</p>
+        <p>I’ve had some time to think about what happened, and I’ve been thinking about it a lot.</p>
+        <p>I understand that you were upset, and I never expected things to end the way they did. Honestly, I was surprised and shocked by how strongly you reacted, because I never realized that the situation would affect you that deeply.</p>
       </div>
+      <button class="next-step-btn" onclick="revealNext(2)">continue reading ↓</button>
     </div>
 
+    <!-- Section 2: Speech Bubbles with staggered entrance -->
     <div class="flow-item speech-bubbles-flow" id="item2">
       <div class="bubble-cluster">
         <span class="hand-top-misunderstood">maybe we misunderstood...</span>
@@ -611,10 +634,12 @@
       <span class="hand-bottom-things">things we didn't say</span>
       
       <div class="editorial-p">
-        I think there were things we never really talked about clearly, and maybe that’s why things became so complicated.
+        I think there were things between us that we never really talked about clearly, and maybe that’s why things became so complicated. We’ve been in similar situations before, so I guess I assumed you already understood how things were between us.
       </div>
+      <button class="next-step-btn" onclick="revealNext(3)">continue reading ↓</button>
     </div>
 
+    <!-- Section 3: Timeline Line -->
     <div class="flow-item timeline-flow" id="item3">
       <div class="timeline-spine-line"></div>
 
@@ -622,19 +647,21 @@
         <div class="timeline-circle-node" style="top: 8px;"></div>
         <span class="hand-timeline-top">I thought you knew...</span>
         <div class="editorial-p">
-          We’ve been in similar situations before, so I guess I assumed you already understood how things were between us.
+          I never thought it would end with us suddenly not talking anymore. Whatever our relationship was, the connection we shared over all these years genuinely meant a lot to me.
         </div>
       </div>
 
       <div class="timeline-part">
         <div class="timeline-circle-node" style="top: 8px;"></div>
         <div class="editorial-p">
-          I never thought this situation would affect you this much or that it would end with us not talking anymore.
+          I’m not sending this to force you to talk to me or to ask you to come back. I just wanted to be honest about what I’ve been thinking and feeling.
         </div>
         <span class="hand-timeline-bottom">maybe I assumed too much.</span>
       </div>
+      <button class="next-step-btn" onclick="revealNext(4)">continue reading ↓</button>
     </div>
 
+    <!-- Section 4: Navy Contrast Section -->
     <div class="flow-item navy-contrast-section" id="item4">
       <div class="connecting-visual-box">
         <span class="leaving-door-tag">leaving the door open.</span>
@@ -647,29 +674,25 @@
       </div>
 
       <div class="navy-quote-body">
-        “I don’t want to force you to talk to me or ask you to come back. I just want you to know that what we had and 
+        “Whatever our relationship was, 
         <span class="gold-hand-span">
           the connection we shared
           <svg class="gold-underline-svg" viewBox="0 0 200 12" fill="none">
             <path d="M2 7C50 3 150 2 198 8" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/>
           </svg>
         </span>
-        for all these years meant a lot to me.”
+        over all these years genuinely meant a lot to me.”
       </div>
+      <button class="next-step-btn" style="color: #cbd5e1; border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.08);" onclick="revealNext(5)">continue reading ↓</button>
     </div>
 
+    <!-- Section 5: Final Close & Telegram (Clean, No-Pressure removed) -->
     <div class="flow-item final-closing-flow" id="item5">
       <div class="final-serif-lead">If you ever want<br>to talk calmly,</div>
       
       <div class="final-signature-wrap">
         <span class="final-signature">I’m here.</span>
         <div class="final-sig-underline"></div>
-      </div>
-
-      <div class="final-subtext-group">
-        NO PRESSURE.<br>
-        NO EXPECTATIONS.<br>
-        JUST HONESTY.
       </div>
 
       <div>
@@ -680,13 +703,11 @@
           <span>Message @honeyfrombee</span>
         </a>
       </div>
-
-      <div class="final-bottom-aside">
-      </div>
     </div>
 
   </main>
 
+  <!-- YouTube Official IFrame API -->
   <script src="https://www.youtube.com/iframe_api"></script>
 
   <script>
@@ -695,7 +716,6 @@
     const musicBtn = document.getElementById('musicBtn');
     const musicStatus = document.getElementById('musicStatus');
 
-    // Video ID: pA6N1o_sv5M (ဗဒင် - နေရာ ၂)
     function onYouTubeIframeAPIReady() {
       ytPlayer = new YT.Player('ytPlayer', {
         videoId: 'pA6N1o_sv5M',
@@ -758,11 +778,10 @@
     noBtn.addEventListener('touchstart', dodgeNoButton, { passive: false });
     noBtn.addEventListener('click', (e) => { e.preventDefault(); dodgeNoButton(); });
 
-    // Yes button initiates audio and triggers seamless sequential reveal
+    // Yes button initiates audio and triggers first section
     const yesBtn = document.getElementById('yesBtn');
     const gateModal = document.getElementById('gateModal');
     const noteContent = document.getElementById('noteContent');
-    const items = document.querySelectorAll('.flow-item');
 
     yesBtn.addEventListener('click', () => {
       if (navigator.vibrate) navigator.vibrate([20, 50, 20]);
@@ -774,15 +793,27 @@
       setTimeout(() => {
         gateModal.style.display = 'none';
         noteContent.classList.add('active-stream');
-        
-        // Sequentially reveal parts on the pure background
-        items.forEach((item, index) => {
-          setTimeout(() => {
-            item.classList.add('show-item');
-          }, 420 * (index + 1));
-        });
+        const item1 = document.getElementById('item1');
+        item1.classList.add('show-item');
       }, 700);
     });
+
+    // Step-by-step interactive unfolding
+    function revealNext(stepNum) {
+      if (navigator.vibrate) navigator.vibrate(10);
+      
+      // Hide caller button
+      const currentBtn = event.currentTarget;
+      if (currentBtn) currentBtn.style.display = 'none';
+
+      const nextItem = document.getElementById('item' + stepNum);
+      if (nextItem) {
+        nextItem.classList.add('show-item');
+        setTimeout(() => {
+          nextItem.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      }
+    }
   </script>
 </body>
 </html>
