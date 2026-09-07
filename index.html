@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>A Note from Honey</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #f6f3ec;
+      --navy-deep: #0b1329;
+      --ink: #18191f;
+      --ink-soft: #555b68;
+      --cobalt: #1d4ed8;
+      --yellow: #f59e0b;
+      --orange: #ea580c;
+      
+      --f-serif: 'Instrument Serif', Georgia, serif;
+      --f-sans: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --f-display: 'Space Grotesk', sans-serif;
+      --f-hand: 'Caveat', cursive;
+
+      --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    html {
+      background-color: var(--bg);
+      color: var(--ink);
+      font-family: var(--f-sans);
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100svh;
+      overflow-x: hidden;
+      position: relative;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.8s ease;
+    }
+
+    /* Paper Film Texture */
+    .grain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* Floating Header Pill */
+    .music-capsule {
+      position: fixed;
+      top: max(16px, env(safe-area-inset-top));
+      right: 16px;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(24, 25, 31, 0.1);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 999px;
+      padding: 6px 14px 6px 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+      transition: transform 0.2s var(--ease-bounce);
+    }
+
+    .music-capsule:active {
+      transform: scale(0.93);
+    }
+
+    .vinyl {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #0b1329 35%, #1d4ed8 36%, #0b1329 70%, #475266 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .vinyl-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--yellow);
+      border-radius: 50%;
+    }
+
+    .playing .vinyl {
+      animation: spinVinyl 3.5s linear infinite;
+    }
+
+    @keyframes spinVinyl {
+      to { transform: rotate(360deg); }
+    }
+
+    .music-tag {
+      font-family: var(--f-display);
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      color: var(--ink);
+    }
+
+    /* Hidden YouTube Player */
+    #ytHost {
+      position: fixed;
+      top: -9999px;
+      left: -9999px;
+      width: 200px;
+      height: 200px;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    /* ========================================================
+       STAGE 1: GATE MODAL (QUESTION SCREEN)
+    ======================================================== */
+    #gateModal {
+      position: fixed;
+      inset: 0;
+      background-color: var(--bg);
+      z-index: 90;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+      transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+    }
+
+    .gate-content {
+      width: 100%;
+      max-width: 360px;
+      position: relative;
+    }
+
+    .gate-sticker {
+      font-family: var(--f-hand);
+      font-size: 1.4rem;
+      color: var(--orange);
+      display: inline-block;
+      background: #fef08a;
+      border: 1.5px solid var(--ink);
+      padding: 2px 14px;
+      border-radius: 8px;
+      transform: rotate(-3deg);
+      margin-bottom: 16px;
+    }
+
+    .gate-title {
+      font-family: var(--f-display);
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.35;
+      margin-bottom: 12px;
+      color: var(--ink);
+    }
+
+    .gate-sub {
+      font-size: 0.98rem;
+      color: var(--ink-soft);
+      line-height: 1.55;
+      margin-bottom: 32px;
+    }
+
+    .gate-action-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      min-height: 55px;
+    }
+
+    .btn-yes {
+      background: var(--ink);
+      color: #ffffff;
+      border: 2px solid var(--ink);
+      font-family: var(--f-display);
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 14px 34px;
+      border-radius: 100px;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      transition: transform 0.2s var(--ease-bounce);
+    }
+
+    .btn-yes:active {
+      transform: scale(0.92);
+    }
+
+    .btn-no {
+      background: #713f12;
+      color: #854d0e;
+      border: 3px dotted #a16207;
+      font-family: 'Courier New', monospace;
+      font-size: 0.72rem;
+      font-weight: 900;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: not-allowed;
+      opacity: 0.5;
+      filter: grayscale(1);
+      transform: rotate(8deg);
+      transition: all 0.15s ease-out;
+      text-decoration: line-through;
+    }
+
+    /* ========================================================
+       STAGE 2: FREEFORM STREAM (NO RECTANGLE CARDS)
+    ======================================================== */
+    #noteContent {
+      width: 100%;
+      max-width: 440px;
+      margin: 0 auto;
+      padding: max(80px, env(safe-area-inset-top)) 24px max(80px, env(safe-area-inset-bottom));
+      display: flex;
+      flex-direction: column;
+      gap: 56px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s ease;
+    }
+
+    #noteContent.active-stream {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Clean reveal animation without cards */
+    .flow-item {
+      position: relative;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.85s var(--ease-out), transform 0.85s var(--ease-bounce);
+    }
+
+    .flow-item.show-item {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .editorial-p {
+      font-size: clamp(1.1rem, 4.4vw, 1.25rem);
+      line-height: 1.65;
+      font-weight: 500;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+
+    .editorial-p + .editorial-p {
+      margin-top: 14px;
+    }
+
+    .hand-label {
+      font-family: var(--f-hand);
+      font-size: 1.45rem;
+      color: var(--cobalt);
+      display: block;
+      margin-bottom: 8px;
+      transform: rotate(-1.5deg);
+    }
+
+    /* --------------------------------------------------------
+       SECTION 2: SPEECH BUBBLES (MATCHING YOUR IMAGE 1)
+    -------------------------------------------------------- */
+    .speech-bubbles-flow {
+      position: relative;
+      padding-top: 18px;
+    }
+
+    .bubble-cluster {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .hand-top-misunderstood {
+      position: absolute;
+      top: -34px;
+      right: 12px;
+      font-family: var(--f-hand);
+      font-size: 1.35rem;
+      color: #ea580c;
+      transform: rotate(2deg);
+    }
+
+    .chat-bubble {
+      display: inline-block;
+      padding: 14px 22px;
+      border-radius: 20px;
+      border: 2px solid #18191f;
+      font-family: var(--f-sans);
+      font-size: 1.15rem;
+      font-weight: 600;
+      position: relative;
+      box-shadow: 4px 6px 0px rgba(24, 25, 31, 0.08);
+      max-width: 88%;
+    }
+
+    .bubble-left {
+      align-self: flex-start;
+      background: #ffffff;
+      color: #18191f;
+      transform: rotate(-1deg);
+    }
+
+    .bubble-right {
+      align-self: flex-end;
+      background: #f59e0b;
+      color: #18191f;
+      transform: rotate(1deg);
+    }
+
+    .hand-bottom-things {
+      font-family: var(--f-hand);
+      font-size: 1.45rem;
+      color: #2563eb;
+      margin-bottom: 14px;
+      display: block;
+      transform: rotate(-2deg);
+    }
+
+    /* --------------------------------------------------------
+       SECTION 3: TIMELINE VERTICAL PATH (MATCHING YOUR IMAGE 2)
+    -------------------------------------------------------- */
+    .timeline-flow {
+      position: relative;
+      padding-left: 36px;
+    }
+
+    .timeline-spine-line {
+      position: absolute;
+      left: 7px;
+      top: 18px;
+      bottom: 24px;
+      width: 4px;
+      background: #ea580c;
+      border-radius: 4px;
+    }
+
+    .timeline-circle-node {
+      position: absolute;
+      left: -36px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 4px solid #ea580c;
+    }
+
+    .timeline-part {
+      position: relative;
+    }
+
+    .timeline-part + .timeline-part {
+      margin-top: 36px;
+    }
+
+    .hand-timeline-top {
+      font-family: var(--f-hand);
+      font-size: 1.4rem;
+      color: #ea580c;
+      display: block;
+      margin-bottom: 6px;
+      transform: rotate(-1.5deg);
+    }
+
+    .hand-timeline-bottom {
+      font-family: var(--f-hand);
+      font-size: 1.45rem;
+      color: #2563eb;
+      display: block;
+      text-align: right;
+      margin-top: 12px;
+      transform: rotate(-1.5deg);
+    }
+
+    /* --------------------------------------------------------
+       SECTION 4: DEEP NAVY CONTRAST PANEL (MATCHING YOUR IMAGE 3)
+    -------------------------------------------------------- */
+    .navy-contrast-section {
+      background: var(--navy-deep);
+      margin-left: -24px;
+      margin-right: -24px;
+      padding: 48px 24px;
+      border-radius: 36px;
+      color: #ffffff;
+      position: relative;
+      box-shadow: 0 20px 50px -15px rgba(11, 19, 41, 0.45);
+    }
+
+    .connecting-visual-box {
+      width: 100%;
+      height: 80px;
+      position: relative;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .navy-doodle-svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .leaving-door-tag {
+      position: absolute;
+      top: -10px;
+      right: 12px;
+      font-family: var(--f-hand);
+      font-size: 1.35rem;
+      color: #93c5fd;
+      transform: rotate(3deg);
+    }
+
+    .navy-quote-body {
+      font-family: var(--f-serif);
+      font-size: clamp(1.48rem, 5vw, 1.85rem);
+      line-height: 1.55;
+      font-style: italic;
+      color: #f1f5f9;
+    }
+
+    .gold-hand-span {
+      font-family: var(--f-hand);
+      font-size: clamp(2.2rem, 7vw, 2.7rem);
+      font-style: normal;
+      color: #f59e0b;
+      display: inline-block;
+      padding: 0 4px;
+      position: relative;
+    }
+
+    .gold-underline-svg {
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 100%;
+      height: 12px;
+      pointer-events: none;
+    }
+
+    /* --------------------------------------------------------
+       SECTION 5: FINAL CLOSE & TELEGRAM (MATCHING YOUR IMAGE 4)
+    -------------------------------------------------------- */
+    .final-closing-flow {
+      text-align: center;
+      padding: 24px 0 32px;
+    }
+
+    .final-serif-lead {
+      font-family: var(--f-serif);
+      font-size: clamp(2.1rem, 7vw, 2.5rem);
+      line-height: 1.25;
+      margin-bottom: 8px;
+      color: var(--ink);
+    }
+
+    .final-signature-wrap {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 30px;
+    }
+
+    .final-signature {
+      font-family: var(--f-hand);
+      font-size: clamp(4.4rem, 15vw, 5.8rem);
+      font-weight: 700;
+      color: #2563eb;
+      line-height: 1;
+      display: block;
+      transform: rotate(-1deg);
+    }
+
+    .final-sig-underline {
+      position: absolute;
+      left: 8%;
+      bottom: 2px;
+      width: 84%;
+      height: 4px;
+      background: #ea580c;
+      border-radius: 4px;
+    }
+
+    .final-subtext-group {
+      font-family: var(--f-sans);
+      font-size: 0.95rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #18191f;
+      font-weight: 700;
+      line-height: 1.95;
+      margin-bottom: 38px;
+    }
+
+    .telegram-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      background: #18191f;
+      color: #ffffff;
+      padding: 16px 30px;
+      border-radius: 100px;
+      font-family: var(--f-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 10px 0px #c7d2fe;
+      border: 2px solid #18191f;
+      transition: transform 0.2s var(--ease-bounce);
+      margin-bottom: 38px;
+      width: 100%;
+      max-width: 320px;
+    }
+
+    .telegram-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: #ffffff;
+    }
+
+    .telegram-btn:active {
+      transform: scale(0.96) translateY(4px);
+      box-shadow: 0 4px 0px #c7d2fe;
+    }
+
+    .final-bottom-aside {
+      font-family: var(--f-hand);
+      font-size: 1.55rem;
+      color: #18191f;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="grain" aria-hidden="true"></div>
+
+  <div class="music-capsule" id="musicBtn" role="button" aria-label="Toggle music">
+    <div class="vinyl">
+      <div class="vinyl-dot"></div>
+    </div>
+    <span class="music-tag" id="musicStatus">listening quietly ♫</span>
+  </div>
+
+  <div id="ytHost">
+    <div id="ytPlayer"></div>
+  </div>
+
+  <div id="gateModal">
+    <div class="gate-content">
+      <span class="gate-sticker">from honey</span>
+      <h1 class="gate-title">Do you want to open this note?</h1>
+      <p class="gate-sub">There are some things I just wanted to say honestly.</p>
+
+      <div class="gate-action-row">
+        <button class="btn-yes" id="yesBtn">Yes, open it</button>
+        <button class="btn-no" id="noBtn">No</button>
+      </div>
+    </div>
+  </div>
+
+  <main id="noteContent">
+
+    <div class="flow-item" id="item1">
+      <span class="hand-label">just thinking...</span>
+      <div class="editorial-p">
+        <p>I’ve been thinking about what happened, and I understand that you were upset.</p>
+        <p>I never expected things to end like this, and honestly, I was surprised and shocked by how strongly you reacted when you were upset.</p>
+      </div>
+    </div>
+
+    <div class="flow-item speech-bubbles-flow" id="item2">
+      <div class="bubble-cluster">
+        <span class="hand-top-misunderstood">maybe we misunderstood...</span>
+        <div class="chat-bubble bubble-left">
+          “Things were never said clearly.”
+        </div>
+        <div class="chat-bubble bubble-right">
+          “It became complicated.”
+        </div>
+      </div>
+      
+      <span class="hand-bottom-things">things we didn't say</span>
+      
+      <div class="editorial-p">
+        I think there were things we never really talked about clearly, and maybe that’s why things became so complicated.
+      </div>
+    </div>
+
+    <div class="flow-item timeline-flow" id="item3">
+      <div class="timeline-spine-line"></div>
+
+      <div class="timeline-part">
+        <div class="timeline-circle-node" style="top: 8px;"></div>
+        <span class="hand-timeline-top">I thought you knew...</span>
+        <div class="editorial-p">
+          We’ve been in similar situations before, so I guess I assumed you already understood how things were between us.
+        </div>
+      </div>
+
+      <div class="timeline-part">
+        <div class="timeline-circle-node" style="top: 8px;"></div>
+        <div class="editorial-p">
+          I never thought this situation would affect you this much or that it would end with us not talking anymore.
+        </div>
+        <span class="hand-timeline-bottom">maybe I assumed too much.</span>
+      </div>
+    </div>
+
+    <div class="flow-item navy-contrast-section" id="item4">
+      <div class="connecting-visual-box">
+        <span class="leaving-door-tag">leaving the door open.</span>
+        
+        <svg class="navy-doodle-svg" viewBox="0 0 320 80" fill="none">
+          <path d="M75 42C75 28 88 18 102 18C118 18 128 28 126 44C124 58 112 66 98 65C84 64 75 56 75 42Z" fill="#1e40af" stroke="#2563eb" stroke-width="2"/>
+          <path d="M126 42C145 35 162 48 182 43" stroke="#d97706" stroke-width="2.5" stroke-dasharray="5 5"/>
+          <path d="M182 43C182 28 196 19 210 19C226 19 236 29 234 45C232 59 220 67 206 66C192 65 182 57 182 43Z" fill="#78350f" stroke="#d97706" stroke-width="2"/>
+        </svg>
+      </div>
+
+      <div class="navy-quote-body">
+        “I don’t want to force you to talk to me or ask you to come back. I just want you to know that what we had and 
+        <span class="gold-hand-span">
+          the connection we shared
+          <svg class="gold-underline-svg" viewBox="0 0 200 12" fill="none">
+            <path d="M2 7C50 3 150 2 198 8" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </span>
+        for all these years meant a lot to me.”
+      </div>
+    </div>
+
+    <div class="flow-item final-closing-flow" id="item5">
+      <div class="final-serif-lead">If you ever want<br>to talk calmly,</div>
+      
+      <div class="final-signature-wrap">
+        <span class="final-signature">I’m here.</span>
+        <div class="final-sig-underline"></div>
+      </div>
+
+      <div class="final-subtext-group">
+        NO PRESSURE.<br>
+        NO EXPECTATIONS.<br>
+        JUST HONESTY.
+      </div>
+
+      <div>
+        <a href="https://t.me/honeyfrombee" target="_blank" rel="noopener noreferrer" class="telegram-btn">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.12.03-1.99 1.27-5.62 3.72-.53.36-1.01.54-1.44.53-.47-.01-1.38-.27-2.06-.49-.83-.27-1.49-.42-1.43-.88.03-.24.37-.49 1.02-.75 3.98-1.73 6.64-2.87 7.97-3.44 3.79-1.61 4.58-1.89 5.09-1.9.11 0 .37.03.54.17.14.12.18.28.2.45-.02.07-.02.21-.04.35z"/>
+          </svg>
+          <span>Message @honeyfrombee</span>
+        </a>
+      </div>
+
+      <div class="final-bottom-aside">
+      </div>
+    </div>
+
+  </main>
+
+  <script src="https://www.youtube.com/iframe_api"></script>
+
+  <script>
+    let ytPlayer = null;
+    let isPlaying = false;
+    const musicBtn = document.getElementById('musicBtn');
+    const musicStatus = document.getElementById('musicStatus');
+
+    // Video ID: pA6N1o_sv5M (ဗဒင် - နေရာ ၂)
+    function onYouTubeIframeAPIReady() {
+      ytPlayer = new YT.Player('ytPlayer', {
+        videoId: 'pA6N1o_sv5M',
+        playerVars: {
+          autoplay: 0,
+          controls: 0,
+          loop: 1,
+          playlist: 'pA6N1o_sv5M',
+          playsinline: 1
+        },
+        events: {
+          'onReady': (e) => {
+            e.target.setVolume(100);
+          },
+          'onStateChange': (event) => {
+            if (event.data === YT.PlayerState.PLAYING) {
+              isPlaying = true;
+              musicBtn.classList.add('playing');
+              musicStatus.textContent = "listening quietly ♫";
+            } else {
+              isPlaying = false;
+              musicBtn.classList.remove('playing');
+              musicStatus.textContent = "paused ♫";
+            }
+          }
+        }
+      });
+    }
+
+    function playYouTubeAudio() {
+      if (ytPlayer && ytPlayer.playVideo) {
+        ytPlayer.unMute();
+        ytPlayer.setVolume(100);
+        ytPlayer.playVideo();
+      }
+    }
+
+    musicBtn.addEventListener('click', () => {
+      if (!ytPlayer) return;
+      if (isPlaying) {
+        ytPlayer.pauseVideo();
+      } else {
+        ytPlayer.unMute();
+        ytPlayer.playVideo();
+      }
+    });
+
+    // Runaway No Button
+    const noBtn = document.getElementById('noBtn');
+    function dodgeNoButton(e) {
+      if (e) e.preventDefault();
+      const randomX = (Math.random() - 0.5) * 130;
+      const randomY = (Math.random() - 0.5) * 90;
+      const randomRot = (Math.random() - 0.5) * 50;
+      noBtn.style.transform = `translate(${randomX}px, ${randomY}px) scale(0.65) rotate(${randomRot}deg)`;
+      noBtn.style.opacity = '0.35';
+      if (navigator.vibrate) navigator.vibrate(8);
+    }
+    noBtn.addEventListener('mouseenter', dodgeNoButton);
+    noBtn.addEventListener('touchstart', dodgeNoButton, { passive: false });
+    noBtn.addEventListener('click', (e) => { e.preventDefault(); dodgeNoButton(); });
+
+    // Yes button initiates audio and triggers seamless sequential reveal
+    const yesBtn = document.getElementById('yesBtn');
+    const gateModal = document.getElementById('gateModal');
+    const noteContent = document.getElementById('noteContent');
+    const items = document.querySelectorAll('.flow-item');
+
+    yesBtn.addEventListener('click', () => {
+      if (navigator.vibrate) navigator.vibrate([20, 50, 20]);
+      
+      playYouTubeAudio();
+
+      gateModal.style.opacity = '0';
+      gateModal.style.transform = 'scale(0.95)';
+      setTimeout(() => {
+        gateModal.style.display = 'none';
+        noteContent.classList.add('active-stream');
+        
+        // Sequentially reveal parts on the pure background
+        items.forEach((item, index) => {
+          setTimeout(() => {
+            item.classList.add('show-item');
+          }, 420 * (index + 1));
+        });
+      }, 700);
+    });
+  </script>
+</body>
+</html>
