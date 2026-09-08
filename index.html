@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>A Note from Honey</title>
+  <title>A Perspective from Honey</title>
 
   <!-- Google Fonts: Caveat (Handwriting), Instrument Serif & Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg: #f6f3ec;
+      --bg: #f5f2eb;
       --navy-deep: #0b1329;
       --ink: #18191f;
       --ink-soft: #555b68;
@@ -38,22 +38,17 @@
       -webkit-user-select: none;
     }
 
-    html {
+    html, body {
       background-color: var(--bg);
       color: var(--ink);
       font-family: var(--f-sans);
-      overflow-x: hidden;
-      scroll-behavior: smooth;
-    }
-
-    body {
       min-height: 100svh;
       overflow-x: hidden;
-      position: relative;
+      scroll-behavior: smooth;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Paper Film Texture */
+    /* Cinematic Film Grain film */
     .grain {
       position: fixed;
       inset: 0;
@@ -63,23 +58,35 @@
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
 
-    /* Floating Ambient Header Pill */
+    /* Top Reading Progress Bar */
+    #progressBar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3.5px;
+      background: linear-gradient(90deg, #ea580c, #f59e0b, #1d4ed8);
+      width: 0%;
+      z-index: 1000;
+      transition: width 0.1s linear;
+    }
+
+    /* Discreet Floating Music Capsule with Waveform */
     .music-capsule {
       position: fixed;
       top: max(16px, env(safe-area-inset-top));
       right: 16px;
       z-index: 100;
-      background: rgba(255, 255, 255, 0.92);
-      border: 1px solid rgba(24, 25, 31, 0.1);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      background: rgba(255, 255, 255, 0.94);
+      border: 1.5px solid rgba(24, 25, 31, 0.12);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border-radius: 999px;
       padding: 6px 14px 6px 6px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 9px;
       cursor: pointer;
-      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.09);
       transition: transform 0.2s var(--ease-bounce);
     }
 
@@ -95,6 +102,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
     }
 
     .vinyl-dot {
@@ -112,15 +120,40 @@
       to { transform: rotate(360deg); }
     }
 
+    /* Modern Waveform Equalizer Visual */
+    .eq-cluster {
+      display: flex;
+      align-items: flex-end;
+      gap: 2.5px;
+      height: 12px;
+    }
+
+    .eq-bar {
+      width: 2.5px;
+      background: var(--ink);
+      border-radius: 1px;
+      height: 4px;
+      transition: height 0.2s ease;
+    }
+
+    .playing .eq-bar:nth-child(1) { animation: eqPulse 0.8s infinite ease-in-out alternate; }
+    .playing .eq-bar:nth-child(2) { animation: eqPulse 0.5s infinite ease-in-out alternate 0.2s; }
+    .playing .eq-bar:nth-child(3) { animation: eqPulse 0.7s infinite ease-in-out alternate 0.4s; }
+
+    @keyframes eqPulse {
+      0% { height: 3px; }
+      100% { height: 14px; }
+    }
+
     .music-tag {
       font-family: var(--f-display);
-      font-size: 0.74rem;
+      font-size: 0.76rem;
       font-weight: 700;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.02em;
       color: var(--ink);
     }
 
-    /* Hidden YouTube Player Engine */
+    /* Hidden YouTube IFrame Audio Engine */
     #ytHost {
       position: fixed;
       top: -9999px;
@@ -132,12 +165,12 @@
     }
 
     /* ========================================================
-       STAGE 1: GATE MODAL (QUESTION SCREEN)
+       STAGE 1: GATE MODAL (Tactile Gateway)
     ======================================================== */
     #gateModal {
       position: fixed;
       inset: 0;
-      background-color: var(--bg);
+      background: radial-gradient(circle at 50% 30%, #ffffff 0%, var(--bg) 100%);
       z-index: 90;
       display: flex;
       flex-direction: column;
@@ -148,39 +181,51 @@
       transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
     }
 
-    .gate-content {
-      width: 100%;
-      max-width: 360px;
+    .gate-wrapper {
       position: relative;
+      width: 100%;
+      max-width: 380px;
+      background: #ffffff;
+      border: 2px solid var(--ink);
+      border-radius: 32px;
+      padding: clamp(34px, 8vw, 44px) 26px;
+      box-shadow: 6px 8px 0px rgba(24, 25, 31, 0.12);
+    }
+
+    .tape-strip {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-1deg);
+      width: 110px;
+      height: 28px;
+      background: rgba(254, 240, 138, 0.85);
+      border-left: 2px dashed rgba(24, 25, 31, 0.2);
+      border-right: 2px dashed rgba(24, 25, 31, 0.2);
     }
 
     .gate-sticker {
       font-family: var(--f-hand);
-      font-size: 1.4rem;
+      font-size: 1.35rem;
       color: var(--orange);
+      margin-bottom: 8px;
       display: inline-block;
-      background: #fef08a;
-      border: 1.5px solid var(--ink);
-      padding: 2px 14px;
-      border-radius: 8px;
-      transform: rotate(-3deg);
-      margin-bottom: 16px;
     }
 
     .gate-title {
       font-family: var(--f-display);
-      font-size: 1.45rem;
-      font-weight: 700;
-      line-height: 1.35;
+      font-size: 19px;
+      font-weight: 800;
+      line-height: 1.3;
       margin-bottom: 12px;
       color: var(--ink);
     }
 
     .gate-sub {
-      font-size: 0.98rem;
+      font-size: 0.96rem;
       color: var(--ink-soft);
       line-height: 1.55;
-      margin-bottom: 32px;
+      margin-bottom: 30px;
     }
 
     .gate-action-row {
@@ -196,7 +241,7 @@
       color: #ffffff;
       border: 2px solid var(--ink);
       font-family: var(--f-display);
-      font-size: 1rem;
+      font-size: 1.02rem;
       font-weight: 700;
       padding: 14px 34px;
       border-radius: 100px;
@@ -236,7 +281,7 @@
       padding: max(85px, env(safe-area-inset-top)) 24px max(80px, env(safe-area-inset-bottom));
       display: flex;
       flex-direction: column;
-      gap: 52px;
+      gap: 56px;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.6s ease;
@@ -250,7 +295,7 @@
     .flow-item {
       position: relative;
       opacity: 0;
-      transform: translateY(28px);
+      transform: translateY(30px);
       transition: opacity 0.85s var(--ease-out), transform 0.85s var(--ease-bounce);
       display: none;
     }
@@ -262,50 +307,52 @@
     }
 
     .editorial-p {
-      font-size: clamp(1.08rem, 4.3vw, 1.22rem);
+      font-size: clamp(1.1rem, 4.4vw, 1.25rem);
       line-height: 1.7;
       font-weight: 500;
       color: var(--ink);
-      letter-spacing: -0.01em;
+      letter-spacing: -0.015em;
     }
 
     .editorial-p + .editorial-p {
-      margin-top: 14px;
+      margin-top: 16px;
     }
 
     .hand-label {
       font-family: var(--f-hand);
-      font-size: 1.45rem;
+      font-size: 1.5rem;
       color: var(--cobalt);
-      display: block;
+      display: inline-block;
       margin-bottom: 8px;
       transform: rotate(-1.5deg);
     }
 
-    /* Interactive Continuation Action */
+    /* Sequential Unfolding Interactive Pill */
     .next-step-btn {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      background: rgba(24, 25, 31, 0.05);
-      border: 1px dashed rgba(24, 25, 31, 0.25);
-      padding: 10px 20px;
+      gap: 10px;
+      background: #ffffff;
+      border: 1.5px solid var(--ink);
+      padding: 10px 22px;
       border-radius: 100px;
-      font-family: var(--f-hand);
-      font-size: 1.25rem;
-      color: var(--ink-soft);
+      font-family: var(--f-display);
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--ink);
       cursor: pointer;
-      margin-top: 24px;
+      margin-top: 26px;
+      box-shadow: 2px 3px 0px rgba(24, 25, 31, 0.1);
       transition: all 0.2s var(--ease-bounce);
     }
 
     .next-step-btn:active {
-      transform: scale(0.95);
-      background: rgba(24, 25, 31, 0.1);
+      transform: scale(0.94) translateY(2px);
+      box-shadow: 0px 1px 0px rgba(24, 25, 31, 0.1);
     }
 
     /* --------------------------------------------------------
-       SECTION 2: CHAT BUBBLE CALLOUTS
+       SECTION 2: MODERN CHAT BUBBLES
     -------------------------------------------------------- */
     .speech-bubbles-flow {
       position: relative;
@@ -315,7 +362,7 @@
     .bubble-cluster {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 18px;
       margin-bottom: 24px;
       position: relative;
     }
@@ -380,7 +427,7 @@
     }
 
     /* --------------------------------------------------------
-       SECTION 3: TIMELINE & CIRCULAR CYCLE PATH
+       SECTION 3: TIMELINE VERTICAL PATH
     -------------------------------------------------------- */
     .timeline-flow {
       position: relative;
@@ -412,7 +459,7 @@
     }
 
     .timeline-part + .timeline-part {
-      margin-top: 34px;
+      margin-top: 36px;
     }
 
     .hand-timeline-top {
@@ -435,7 +482,7 @@
     }
 
     /* --------------------------------------------------------
-       SECTION 4: NAVY HIGH CONTRAST FOCUS
+       SECTION 4: DEEP NAVY CONTRAST PANEL (FOCAL POINT)
     -------------------------------------------------------- */
     .navy-contrast-section {
       background: var(--navy-deep);
@@ -475,19 +522,20 @@
 
     .navy-quote-body {
       font-family: var(--f-serif);
-      font-size: clamp(1.45rem, 4.9vw, 1.8rem);
-      line-height: 1.6;
+      font-size: clamp(1.48rem, 5vw, 1.85rem);
+      line-height: 1.55;
       font-style: italic;
       color: #f1f5f9;
     }
 
     .gold-hand-span {
       font-family: var(--f-hand);
-      font-size: clamp(2.2rem, 7vw, 2.7rem);
+      font-size: clamp(2.2rem, 7vw, 2.75rem);
       font-style: normal;
       color: #f59e0b;
       display: inline-block;
       padding: 0 4px;
+      font-size: 40px;
       position: relative;
     }
 
@@ -501,18 +549,23 @@
     }
 
     /* --------------------------------------------------------
-       SECTION 5: PERSPECTIVE & HONEST INTENT
-    -------------------------------------------------------- */
-    .perspective-flow {
-      position: relative;
-    }
-
-    /* --------------------------------------------------------
-       SECTION 6: FINAL SIGN-OFF & TELEGRAM
+       SECTION 6: FINAL CLOSE & TELEGRAM (CLEAN & PROFESSIONAL)
     -------------------------------------------------------- */
     .final-closing-flow {
       text-align: center;
-      padding: 16px 0 24px;
+      padding: 24px 0 32px;
+    }
+
+    .respect-resolution {
+      font-family: var(--f-serif);
+      font-size: 1.55rem;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--ink);
+      margin-bottom: 30px;
+      max-width: 380px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .final-serif-lead {
@@ -565,8 +618,9 @@
       box-shadow: 0 10px 0px #c7d2fe;
       border: 2px solid #18191f;
       transition: transform 0.2s var(--ease-bounce);
+      margin-bottom: 38px;
       width: 100%;
-      max-width: 330px;
+      max-width: 320px;
     }
 
     .telegram-btn svg {
@@ -584,23 +638,30 @@
 <body>
 
   <div class="grain" aria-hidden="true"></div>
+  <div id="progressBar"></div>
 
-  <!-- Music Pill Header -->
+  <!-- Ambient Audio Capsule Control with Live Visualizer -->
   <div class="music-capsule" id="musicBtn" role="button" aria-label="Toggle music">
     <div class="vinyl">
       <div class="vinyl-dot"></div>
     </div>
+    <div class="eq-cluster">
+      <div class="eq-bar"></div>
+      <div class="eq-bar"></div>
+      <div class="eq-bar"></div>
+    </div>
     <span class="music-tag" id="musicStatus">listening quietly ♫</span>
   </div>
 
-  <!-- YouTube Official Engine Container for ID: pA6N1o_sv5M (ဗဒင် - နေရာ ၂) -->
+  <!-- YouTube Official Audio Engine: Video ID pA6N1o_sv5M -->
   <div id="ytHost">
     <div id="ytPlayer"></div>
   </div>
 
   <!-- STAGE 1: GATE MODAL -->
   <div id="gateModal">
-    <div class="gate-content">
+    <div class="gate-wrapper">
+      <div class="tape-strip"></div>
       <span class="gate-sticker">from honey</span>
       <h1 class="gate-title">Do you want to open this note?</h1>
       <p class="gate-sub">There are some things I just wanted to say honestly.</p>
@@ -615,7 +676,7 @@
   <!-- STAGE 2: SEQUENTIAL EDITORIAL STREAM -->
   <main id="noteContent">
 
-    <!-- Section 1: Opening reflection -->
+    <!-- Section 1 -->
     <div class="flow-item" id="item1">
       <span class="hand-label">just thinking...</span>
       <div class="editorial-p">
@@ -625,7 +686,7 @@
       <button class="next-step-btn" onclick="revealNext(2)">continue reading ↓</button>
     </div>
 
-    <!-- Section 2: Things unspoken (Bubbles) -->
+    <!-- Section 2: Dialogue & Confusion -->
     <div class="flow-item speech-bubbles-flow" id="item2">
       <div class="bubble-cluster">
         <span class="hand-top-misunderstood">maybe we misunderstood...</span>
@@ -645,7 +706,7 @@
       <button class="next-step-btn" onclick="revealNext(3)">continue reading ↓</button>
     </div>
 
-    <!-- Section 3: The cycle and assumptions (Timeline) -->
+    <!-- Section 3: Timeline & Assumptions -->
     <div class="flow-item timeline-flow" id="item3">
       <div class="timeline-spine-line"></div>
 
@@ -667,7 +728,7 @@
       <button class="next-step-btn" onclick="revealNext(4)">continue reading ↓</button>
     </div>
 
-    <!-- Section 4: Deep Navy Appreciation -->
+    <!-- Section 4: Deep Navy Appreciation Block -->
     <div class="flow-item navy-contrast-section" id="item4">
       <div class="connecting-visual-box">
         <span class="leaving-door-tag">leaving the door open.</span>
@@ -682,7 +743,7 @@
       <div class="navy-quote-body">
         “Whatever our relationship was, 
         <span class="gold-hand-span">
-          the connection we shared
+          the connection we shared<br>
           <svg class="gold-underline-svg" viewBox="0 0 200 12" fill="none">
             <path d="M2 7C50 3 150 2 198 8" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/>
           </svg>
@@ -692,8 +753,8 @@
       <button class="next-step-btn" style="color: #cbd5e1; border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.08);" onclick="revealNext(5)">continue reading ↓</button>
     </div>
 
-    <!-- Section 5: Perspective and honest intention -->
-    <div class="flow-item perspective-flow" id="item5">
+    <!-- Section 5: Clarification & Respect -->
+    <div class="flow-item" id="item5">
       <span class="hand-label">to be honest...</span>
       <div class="editorial-p">
         <p>So when you reacted the way you did this time, it surprised me. I’m not saying that your feelings were wrong. I just didn’t know you saw things that way.</p>
@@ -702,8 +763,13 @@
       <button class="next-step-btn" onclick="revealNext(6)">continue reading ↓</button>
     </div>
 
-    <!-- Section 6: Final Sign-off & Direct Telegram -->
+    <!-- Section 6: Final Close & Telegram (Integrated Respect Text) -->
     <div class="flow-item final-closing-flow" id="item6">
+      
+      <div class="respect-resolution">
+        And if you’re okay with things staying this way, I’ll respect that too.
+      </div>
+
       <div class="final-serif-lead">If you ever want<br>to talk calmly,</div>
       
       <div class="final-signature-wrap">
@@ -731,8 +797,17 @@
     let isPlaying = false;
     const musicBtn = document.getElementById('musicBtn');
     const musicStatus = document.getElementById('musicStatus');
+    const progressBar = document.getElementById('progressBar');
 
-    // Video ID: pA6N1o_sv5M (ဗဒင် - နေရာ ၂)
+    // Scroll Progress Indicator Line
+    window.addEventListener('scroll', () => {
+      const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      if (progressBar) progressBar.style.width = scrolled + "%";
+    });
+
+    // YouTube API Load (Video ID: pA6N1o_sv5M)
     function onYouTubeIframeAPIReady() {
       ytPlayer = new YT.Player('ytPlayer', {
         videoId: 'pA6N1o_sv5M',
@@ -795,10 +870,11 @@
     noBtn.addEventListener('touchstart', dodgeNoButton, { passive: false });
     noBtn.addEventListener('click', (e) => { e.preventDefault(); dodgeNoButton(); });
 
-    // Yes button initiates audio and reveals the first card
+    // Yes button initiates audio and triggers first section
     const yesBtn = document.getElementById('yesBtn');
     const gateModal = document.getElementById('gateModal');
     const noteContent = document.getElementById('noteContent');
+    const items = document.querySelectorAll('.flow-item');
 
     yesBtn.addEventListener('click', () => {
       if (navigator.vibrate) navigator.vibrate([20, 50, 20]);
@@ -815,7 +891,7 @@
       }, 700);
     });
 
-    // Step-by-step interactive flow
+    // Step-by-step interactive disclosure
     function revealNext(stepNum) {
       if (navigator.vibrate) navigator.vibrate(10);
       
