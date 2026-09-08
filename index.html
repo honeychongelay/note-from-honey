@@ -8,7 +8,7 @@
   <!-- Google Fonts: Caveat (Handwriting), Instrument Serif & Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -51,10 +51,9 @@
       overflow-x: hidden;
       position: relative;
       -webkit-font-smoothing: antialiased;
-      transition: background-color 0.8s ease;
     }
 
-    /* Subtle Paper Grain Film */
+    /* Paper Film Texture */
     .grain {
       position: fixed;
       inset: 0;
@@ -64,13 +63,13 @@
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
 
-    /* Floating Header Pill */
+    /* Floating Ambient Header Pill */
     .music-capsule {
       position: fixed;
       top: max(16px, env(safe-area-inset-top));
       right: 16px;
       z-index: 100;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.92);
       border: 1px solid rgba(24, 25, 31, 0.1);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
@@ -121,7 +120,7 @@
       color: var(--ink);
     }
 
-    /* Hidden YouTube Player */
+    /* Hidden YouTube Player Engine */
     #ytHost {
       position: fixed;
       top: -9999px;
@@ -220,7 +219,7 @@
       padding: 8px 14px;
       border-radius: 6px;
       cursor: not-allowed;
-      opacity: 0.5;
+      opacity: 0.45;
       filter: grayscale(1);
       transform: rotate(8deg);
       transition: all 0.15s ease-out;
@@ -228,13 +227,13 @@
     }
 
     /* ========================================================
-       STAGE 2: FREEFORM STREAM (NO RECTANGLE CARDS)
+       STAGE 2: EDITORIAL FREEFORM STREAM
     ======================================================== */
     #noteContent {
       width: 100%;
       max-width: 440px;
       margin: 0 auto;
-      padding: max(80px, env(safe-area-inset-top)) 24px max(80px, env(safe-area-inset-bottom));
+      padding: max(85px, env(safe-area-inset-top)) 24px max(80px, env(safe-area-inset-bottom));
       display: flex;
       flex-direction: column;
       gap: 52px;
@@ -251,7 +250,7 @@
     .flow-item {
       position: relative;
       opacity: 0;
-      transform: translateY(30px);
+      transform: translateY(28px);
       transition: opacity 0.85s var(--ease-out), transform 0.85s var(--ease-bounce);
       display: none;
     }
@@ -263,8 +262,8 @@
     }
 
     .editorial-p {
-      font-size: clamp(1.1rem, 4.4vw, 1.25rem);
-      line-height: 1.65;
+      font-size: clamp(1.08rem, 4.3vw, 1.22rem);
+      line-height: 1.7;
       font-weight: 500;
       color: var(--ink);
       letter-spacing: -0.01em;
@@ -283,7 +282,7 @@
       transform: rotate(-1.5deg);
     }
 
-    /* Interactive Stepper Trigger */
+    /* Interactive Continuation Action */
     .next-step-btn {
       display: inline-flex;
       align-items: center;
@@ -306,7 +305,7 @@
     }
 
     /* --------------------------------------------------------
-       SECTION 2: SPEECH BUBBLES WITH INDIVIDUAL POP
+       SECTION 2: CHAT BUBBLE CALLOUTS
     -------------------------------------------------------- */
     .speech-bubbles-flow {
       position: relative;
@@ -362,13 +361,13 @@
     .flow-item.show-item .bubble-left {
       opacity: 1;
       transform: rotate(-1deg) scale(1) translateY(0);
-      transition-delay: 0.1s;
+      transition-delay: 0.15s;
     }
 
     .flow-item.show-item .bubble-right {
       opacity: 1;
       transform: rotate(1deg) scale(1) translateY(0);
-      transition-delay: 0.4s;
+      transition-delay: 0.45s;
     }
 
     .hand-bottom-things {
@@ -381,7 +380,7 @@
     }
 
     /* --------------------------------------------------------
-       SECTION 3: TIMELINE VERTICAL PATH
+       SECTION 3: TIMELINE & CIRCULAR CYCLE PATH
     -------------------------------------------------------- */
     .timeline-flow {
       position: relative;
@@ -413,7 +412,7 @@
     }
 
     .timeline-part + .timeline-part {
-      margin-top: 36px;
+      margin-top: 34px;
     }
 
     .hand-timeline-top {
@@ -436,7 +435,7 @@
     }
 
     /* --------------------------------------------------------
-       SECTION 4: DEEP NAVY CONTRAST PANEL
+       SECTION 4: NAVY HIGH CONTRAST FOCUS
     -------------------------------------------------------- */
     .navy-contrast-section {
       background: var(--navy-deep);
@@ -476,8 +475,8 @@
 
     .navy-quote-body {
       font-family: var(--f-serif);
-      font-size: clamp(1.48rem, 5vw, 1.85rem);
-      line-height: 1.55;
+      font-size: clamp(1.45rem, 4.9vw, 1.8rem);
+      line-height: 1.6;
       font-style: italic;
       color: #f1f5f9;
     }
@@ -502,11 +501,18 @@
     }
 
     /* --------------------------------------------------------
-       SECTION 5: FINAL CLOSE & TELEGRAM (CLEAN & DIRECT)
+       SECTION 5: PERSPECTIVE & HONEST INTENT
+    -------------------------------------------------------- */
+    .perspective-flow {
+      position: relative;
+    }
+
+    /* --------------------------------------------------------
+       SECTION 6: FINAL SIGN-OFF & TELEGRAM
     -------------------------------------------------------- */
     .final-closing-flow {
       text-align: center;
-      padding: 24px 0 32px;
+      padding: 16px 0 24px;
     }
 
     .final-serif-lead {
@@ -579,7 +585,7 @@
 
   <div class="grain" aria-hidden="true"></div>
 
-  <!-- Ambient Audio Pill Header -->
+  <!-- Music Pill Header -->
   <div class="music-capsule" id="musicBtn" role="button" aria-label="Toggle music">
     <div class="vinyl">
       <div class="vinyl-dot"></div>
@@ -587,7 +593,7 @@
     <span class="music-tag" id="musicStatus">listening quietly ♫</span>
   </div>
 
-  <!-- Invisible YouTube Engine: pA6N1o_sv5M (ဗဒင် - နေရာ ၂) -->
+  <!-- YouTube Official Engine Container for ID: pA6N1o_sv5M (ဗဒင် - နေရာ ၂) -->
   <div id="ytHost">
     <div id="ytPlayer"></div>
   </div>
@@ -609,17 +615,17 @@
   <!-- STAGE 2: SEQUENTIAL EDITORIAL STREAM -->
   <main id="noteContent">
 
-    <!-- Section 1 -->
+    <!-- Section 1: Opening reflection -->
     <div class="flow-item" id="item1">
       <span class="hand-label">just thinking...</span>
       <div class="editorial-p">
-        <p>I’ve had some time to think about what happened, and I’ve been thinking about it a lot.</p>
-        <p>I understand that you were upset, and I never expected things to end the way they did. Honestly, I was surprised and shocked by how strongly you reacted, because I never realized that the situation would affect you that deeply.</p>
+        <p>I’ve been thinking about everything that happened, and I never expected things to end like this.</p>
+        <p>I was honestly surprised by how strongly you reacted, because I never realized the situation would affect you that much.</p>
       </div>
       <button class="next-step-btn" onclick="revealNext(2)">continue reading ↓</button>
     </div>
 
-    <!-- Section 2: Speech Bubbles with staggered entrance -->
+    <!-- Section 2: Things unspoken (Bubbles) -->
     <div class="flow-item speech-bubbles-flow" id="item2">
       <div class="bubble-cluster">
         <span class="hand-top-misunderstood">maybe we misunderstood...</span>
@@ -634,34 +640,34 @@
       <span class="hand-bottom-things">things we didn't say</span>
       
       <div class="editorial-p">
-        I think there were things between us that we never really talked about clearly, and maybe that’s why things became so complicated. We’ve been in similar situations before, so I guess I assumed you already understood how things were between us.
+        I think there were things between us that we never really talked about clearly, and maybe we understood certain things differently. Maybe that’s why everything became more complicated than it needed to be.
       </div>
       <button class="next-step-btn" onclick="revealNext(3)">continue reading ↓</button>
     </div>
 
-    <!-- Section 3: Timeline Line -->
+    <!-- Section 3: The cycle and assumptions (Timeline) -->
     <div class="flow-item timeline-flow" id="item3">
       <div class="timeline-spine-line"></div>
 
       <div class="timeline-part">
         <div class="timeline-circle-node" style="top: 8px;"></div>
-        <span class="hand-timeline-top">I thought you knew...</span>
+        <span class="hand-timeline-top">from my side...</span>
         <div class="editorial-p">
-          I never thought it would end with us suddenly not talking anymore. Whatever our relationship was, the connection we shared over all these years genuinely meant a lot to me.
+          I always thought you understood that we never had that kind of commitment between us.
         </div>
       </div>
 
       <div class="timeline-part">
         <div class="timeline-circle-node" style="top: 8px;"></div>
         <div class="editorial-p">
-          I’m not sending this to force you to talk to me or to ask you to come back. I just wanted to be honest about what I’ve been thinking and feeling.
+          Over the years, there were times when we could have talked more clearly about us or taken things further, but we never really did. Somehow, we always ended up going back to how things were before.
         </div>
-        <span class="hand-timeline-bottom">maybe I assumed too much.</span>
+        <span class="hand-timeline-bottom">I never thought it would end with us suddenly not talking anymore.</span>
       </div>
       <button class="next-step-btn" onclick="revealNext(4)">continue reading ↓</button>
     </div>
 
-    <!-- Section 4: Navy Contrast Section -->
+    <!-- Section 4: Deep Navy Appreciation -->
     <div class="flow-item navy-contrast-section" id="item4">
       <div class="connecting-visual-box">
         <span class="leaving-door-tag">leaving the door open.</span>
@@ -681,13 +687,23 @@
             <path d="M2 7C50 3 150 2 198 8" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/>
           </svg>
         </span>
-        over all these years genuinely meant a lot to me.”
+        over all these years meant a lot to me. The conversations we had, the things we shared, and simply being part of each other’s lives all meant something to me.”
       </div>
       <button class="next-step-btn" style="color: #cbd5e1; border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.08);" onclick="revealNext(5)">continue reading ↓</button>
     </div>
 
-    <!-- Section 5: Final Close & Telegram (Clean, No-Pressure removed) -->
-    <div class="flow-item final-closing-flow" id="item5">
+    <!-- Section 5: Perspective and honest intention -->
+    <div class="flow-item perspective-flow" id="item5">
+      <span class="hand-label">to be honest...</span>
+      <div class="editorial-p">
+        <p>So when you reacted the way you did this time, it surprised me. I’m not saying that your feelings were wrong. I just didn’t know you saw things that way.</p>
+        <p>I’m not sending this to force you to talk to me or to ask you to come back. I just wanted to be honest about what I’ve been thinking.</p>
+      </div>
+      <button class="next-step-btn" onclick="revealNext(6)">continue reading ↓</button>
+    </div>
+
+    <!-- Section 6: Final Sign-off & Direct Telegram -->
+    <div class="flow-item final-closing-flow" id="item6">
       <div class="final-serif-lead">If you ever want<br>to talk calmly,</div>
       
       <div class="final-signature-wrap">
@@ -716,6 +732,7 @@
     const musicBtn = document.getElementById('musicBtn');
     const musicStatus = document.getElementById('musicStatus');
 
+    // Video ID: pA6N1o_sv5M (ဗဒင် - နေရာ ၂)
     function onYouTubeIframeAPIReady() {
       ytPlayer = new YT.Player('ytPlayer', {
         videoId: 'pA6N1o_sv5M',
@@ -778,7 +795,7 @@
     noBtn.addEventListener('touchstart', dodgeNoButton, { passive: false });
     noBtn.addEventListener('click', (e) => { e.preventDefault(); dodgeNoButton(); });
 
-    // Yes button initiates audio and triggers first section
+    // Yes button initiates audio and reveals the first card
     const yesBtn = document.getElementById('yesBtn');
     const gateModal = document.getElementById('gateModal');
     const noteContent = document.getElementById('noteContent');
@@ -798,11 +815,10 @@
       }, 700);
     });
 
-    // Step-by-step interactive unfolding
+    // Step-by-step interactive flow
     function revealNext(stepNum) {
       if (navigator.vibrate) navigator.vibrate(10);
       
-      // Hide caller button
       const currentBtn = event.currentTarget;
       if (currentBtn) currentBtn.style.display = 'none';
 
