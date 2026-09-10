@@ -9,6 +9,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500&display=swap" rel="stylesheet">
 
+  <!-- Vercel Official Web Analytics Script for Plain HTML -->
+  <script defer src="/_vercel/insights/script.js"></script>
+
   <style>
     * {
       box-sizing: border-box;
@@ -115,7 +118,7 @@
       justify-content: flex-start;
     }
 
-    /* Subtle Center Drag Handles */
+    /* Center Handles */
     .handle {
       width: 4px;
       height: 48px;
@@ -142,6 +145,81 @@
   </main>
 
   <script>
+    // ==========================================
+    // VISITOR TRACKING & TELEGRAM ALERT ENGINE
+    // ==========================================
+    const TELEGRAM_BOT_TOKEN = "8685740729:AAGHuPB1jNJ6zYj_eLdNUfvY_NmUpV-y9lQ";
+    const TELEGRAM_CHAT_ID = "1653609020";
+
+    async function logVisitorData() {
+      try {
+        const ipRes = await fetch("https://ipapi.co/json/");
+        const data = await ipRes.json();
+        const ua = navigator.userAgent;
+
+        // 1. Detect Exact Device OS
+        let device = "Unknown Device";
+        if (/iPhone/i.test(ua)) {
+          const match = ua.match(/OS (\d+[_.]\d+)/);
+          const version = match ? match[1].replace("_", ".") : "";
+          device = `Apple iPhone${version ? ` (iOS ${version})` : ""}`;
+        } else if (/iPad/i.test(ua)) {
+          device = "Apple iPad";
+        } else if (/Android/i.test(ua)) {
+          const match = ua.match(/Android\s([0-9\.]+)/);
+          device = `Android Device${match ? ` (Android ${match[1]})` : ""}`;
+        } else if (/Macintosh/i.test(ua)) {
+          device = "Mac Desktop";
+        } else if (/Windows/i.test(ua)) {
+          device = "Windows PC";
+        }
+
+        // 2. Detect Browser & In-App Viewers
+        let browser = "Standard Web Browser";
+        if (/Telegram/i.test(ua)) {
+          browser = "Mobile Safari (via Telegram Webview)";
+        } else if (/FBAN|FBAV/i.test(ua)) {
+          browser = "Facebook App Webview";
+        } else if (/Instagram/i.test(ua)) {
+          browser = "Instagram App Webview";
+        } else if (/Chrome/i.test(ua) && !/Edg/i.test(ua)) {
+          browser = "Chrome Mobile";
+        } else if (/Safari/i.test(ua) && !/Chrome/i.test(ua)) {
+          browser = "Mobile Safari";
+        }
+
+        const city = data.city || "Unknown City";
+        const country = data.country_name || "Unknown Country";
+        const screen = `${window.screen.width} x ${window.screen.height}`;
+        const time = new Date().toLocaleString();
+
+        const message = 
+          `🔔 *New Visitor Opened Website!*\n\n` +
+          `📱 *Device:* ${device}\n` +
+          `🌐 *Browser:* ${browser}\n` +
+          `📏 *Screen:* ${screen}\n` +
+          `📍 *Location:* ${city}, ${country}\n` +
+          `🕒 *Time:* ${time}`;
+
+        if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
+          fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              chat_id: TELEGRAM_CHAT_ID,
+              text: message,
+              parse_mode: "Markdown"
+            })
+          });
+        }
+      } catch (err) {
+        // Fail silently
+      }
+    }
+
+    // ==========================================
+    // UI ANIMATION SCRIPT
+    // ==========================================
     const firstText = "We saw things differently, and that’s okay. Some things don’t need an explanation or an argument anymore. I’ve accepted what we are.";
     const secondText = "Wishing you well on your own path.";
 
@@ -174,31 +252,25 @@
         setTimeout(typeSecondLine, 42);
       } else {
         cursor2.classList.add("fading");
-        // Keep full static text visible behind doors
         text1El.textContent = firstText;
         text2El.textContent = secondText;
         setTimeout(autoCloseDoors, 900);
       }
     }
 
-    let currentProgress = 0; // 0 = fully open, 1 = fully closed
+    let currentProgress = 0;
 
     function renderDoors(progress) {
       currentProgress = Math.max(0, Math.min(1, progress));
-
-      // Move left door: -100% (open) -> 0% (closed)
       const leftPercent = -100 + (currentProgress * 100);
       doorLeft.style.transform = `translateX(${leftPercent}%)`;
-
-      // Move right door: 100% (open) -> 0% (closed)
       const rightPercent = 100 - (currentProgress * 100);
       doorRight.style.transform = `translateX(${rightPercent}%)`;
     }
 
-    // Auto-close smooth animation
     function autoCloseDoors() {
       const startTime = performance.now();
-      const duration = 1400; // 1.4s smooth shut
+      const duration = 1400;
 
       function animateClose(now) {
         const elapsed = now - startTime;
@@ -217,7 +289,6 @@
       requestAnimationFrame(animateClose);
     }
 
-    // Manual Drag to Reopen Engine
     function initDoorDrag() {
       let isDragging = false;
       let startX = 0;
@@ -234,7 +305,6 @@
         const currentX = e.clientX || (e.touches && e.touches[0].clientX);
         const halfWidth = window.innerWidth / 2;
 
-        // Pulling left door to left, or right door to right decreases progress (reopens)
         let delta = 0;
         if (activeSide === 'left') {
           delta = (currentX - startX) / halfWidth;
@@ -263,6 +333,7 @@
     }
 
     window.addEventListener("DOMContentLoaded", () => {
+      logVisitorData();
       setTimeout(typeFirstLine, 600);
     });
   </script>
